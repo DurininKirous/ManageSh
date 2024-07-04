@@ -10,6 +10,10 @@ ssh-copy-id -i ~/.ssh/id_ecdsa.pub user@$vladivostok
 ssh user@$vladivostok 'ssh-keygen -t ecdsa -q -f ~/.ssh/id_ecdsa -N ""'
 scp user@$vladivostok:/home/user/.ssh/id_ecdsa.pub ~/.ssh/id_ecdsanew.pub
 cat ~/.ssh/id_ecdsanew.pub >> ~/.ssh/authorized_keys
+sudo echo "export VLADIVOSTOK=$vladivostok" >> ~/.bashrc
+sudo echo "export KALININGRAD=$kaliningrad" >> ~/.bashrc
+export VLADIVOSTOK=$vladivostok
+export KALININGRAD=$kaliningrad
 #Устанавливаем зону
 sudo timedatectl set-timezone Europe/Kaliningrad
 ssh user@$vladivostok 'sudo timedatectl set-timezone Asia/Vladivostok'

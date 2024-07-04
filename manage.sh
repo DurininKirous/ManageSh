@@ -11,7 +11,7 @@ if [[ $1 == add_group ]];then
   $(CheckGroup $2)
   if [[ $? -eq 1 ]]; then
     groupadd $2
-    ssh user@192.168.0.2 "groupadd $2"
+    ssh -i /home/user/.ssh/id_ecdsa user@vladivostok "sudo groupadd $2"
   else
     echo "Such group already exists"
     exit 2
@@ -26,10 +26,10 @@ if [[ $1 == add_users ]];then
     for (( i=1; i <= $4; i++ ));do
       name="${3}${i}"
       useradd -m -G $2 $name
-      ssh user@192.168.0.2 "useradd -m -G $2 $name"
+      ssh -i /home/user/.ssh/id_ecdsa user@vladivostok  "sudo useradd -m -G $2 $name"
       password=$(openssl rand -base64 16)
-      echo "$name:$password" | chpasswd
-      ssh user@192.168.0.2 "echo \"$name:$password\" | chpasswd"
+      usermod --password $password $name
+      ssh -i /home/user/.ssh/id_ecdsa user@vladivostok  "sudo usermod --password $password $name"
       echo $name $password
    done
   fi
@@ -41,7 +41,7 @@ if [[ $1 == off_group ]];then
     exit 3
   else
     grep $2 /etc/group | cut -d ':' -f 4 | tr ',' '\n' | xargs -I ARG passwd -l ARG
-    ssh user@192.168.0.2 "grep $2 /etc/group | cut -d ':' -f 4 | tr ',' '\n' | xargs -I ARG passwd -l ARG"
+    ssh -i /home/user/.ssh/id_ecdsa user@vladivostok  "grep $2 /etc/group | cut -d ':' -f 4 | tr ',' '\n' | xargs -I ARG sudo passwd -l ARG"
   fi
 fi
 if [[ $1 == on_group ]];then
@@ -51,6 +51,6 @@ if [[ $1 == on_group ]];then
     exit 3
   else
     grep $2 /etc/group | cut -d ':' -f 4 | tr ',' '\n' | xargs -I ARG passwd -u ARG
-    ssh user@192.168.0.2 "grep $2 /etc/group | cut -d ':' -f 4 | tr ',' '\n' | xargs -I ARG passwd -u ARG"
+    ssh -i /home/user/.ssh/id_ecdsa user@vladivostok  "grep $2 /etc/group | cut -d ':' -f 4 | tr ',' '\n' | xargs -I ARG sudo passwd -u ARG"
   fi
 fi
