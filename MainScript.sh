@@ -49,5 +49,4 @@ ssh user@$vladivostok "sudo ip rule add from 192.168.0.2 lookup custom"
 ssh user@$vladivostok "sudo ip route add default via 192.168.0.1 dev grelan table custom metric 1"
 ssh user@$vladivostok "sudo sysctl net.ipv4.ip_forward=1"
 ssh user@$vladivostok "sudo sysctl -p"
-#Скрипт пункта 8
-git clone https://github.com/DurininKirous/ManageSh
+#Скрипт пункта 8 уже в директории с текущим скриптом
